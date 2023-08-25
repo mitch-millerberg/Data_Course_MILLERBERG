@@ -6,3 +6,4 @@ wind speeds will be 5-10mph
 8/25 this afternoon
  partly sunny, with a hight newar 60.
  this is the weather
+ Partly sunny, with a high near 60. Northwest winds around 7 mph
