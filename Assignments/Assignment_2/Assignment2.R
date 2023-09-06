@@ -17,7 +17,7 @@ head(df,n = 5)
 list.files(path = "./Data", pattern = "^b",
            recursive = TRUE ,
            full.names = TRUE)
-#saving the b files in the global environment 
+  #saving the b files in the global environment 
 bfiles<- list.files(path = "./Data", pattern = "^b",
                     recursive = TRUE ,
                     full.names = TRUE)
@@ -29,7 +29,7 @@ readLines("./Data/Messy_Take2/b_df.csv", n=1)
 
 #forloop
 #Write a command that displays the first line of each of those “b” files
-#1)variable = i
+#1)variable = i (i can be any variable)
 #2)sequence = bfiles
 #3)Do something (print readLines for variable i , first row)
 
@@ -38,20 +38,29 @@ for(i in bfiles){
 }
 
 #Do the same thing for all files that end in “.csv”
+#sanity check
+list.files(path = "./Data", pattern = ".csv",
+           recursive = TRUE ,
+           full.names = TRUE)
+
+#save the value as a sequence
 csv <- list.files(path = "./Data", pattern = ".csv",
                     recursive = TRUE ,
                     full.names = TRUE)
-for(c in csv){
-  print(readLines(c,n=1))
+
+#for loop for all the files that end in ".csv"
+for( all_csv in csv){
+  print(readLines(all_csv,n=1))
 }
+
+
+
 
 #other forloop examples 
 x <- 1:10
 for(i in x ){
     print(i*2)
 }
-
-
 
 
 
