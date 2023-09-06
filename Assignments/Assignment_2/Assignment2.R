@@ -48,25 +48,30 @@ csv <- list.files(path = "./Data", pattern = ".csv",
                     recursive = TRUE ,
                     full.names = TRUE)
 
+
 #for loop for all the files that end in ".csv"
 for( all_csv in csv){
   print(readLines(all_csv,n=1))
 }
 
 
-
-
-#other forloop examples 
+#other for loop examples 
 x <- 1:10
 for(i in x ){
     print(i*2)
 }
 
+iris[,"Sepal.Length"]
 
+for(i in names(iris)){
+  x <- iris[,i]
+  print(mean(x))
+}
 
-
-  
-
+MM <- c("sucks","is dumb","is cool")
+for(i in MM){
+  print(paste0("your mom ",i))
+}
 
 
 
