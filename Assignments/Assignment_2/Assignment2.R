@@ -61,16 +61,10 @@ for(i in x ){
     print(i*2)
 }
 
-iris[,"Sepal.Length"]
 
-for(i in names(iris)){
-  x <- iris[,i]
-  print(mean(x))
-}
-
-MM <- c("sucks","is dumb","is cool")
+MM <- c("clear","Few","Scattered", "Broken","Overcast","Obsured")
 for(i in MM){
-  print(paste0("your mom ",i))
+  print(paste0("The sky today will be  ",i))
 }
 
 
