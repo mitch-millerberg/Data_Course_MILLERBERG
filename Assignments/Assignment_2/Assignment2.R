@@ -1,14 +1,14 @@
 #assingment2 
 # lists all of the .csv files found in the Data/ directory and stores that list in an object called “csv_files”
-csv_files <- list.files(path = "Data",pattern = ".csv")
+csv_files <- list.files(path = "./Data",pattern = ".csv")
 csv_files
 #how many files match that description using the length() function
 length(csv_files)
 #sanity check
-list.files(path = "Data",pattern = ".csv")
+list.files(path = "./Data",pattern = ".csv")
 
 #wingspan_vs Mass
-df <- read.csv("Data/wingspan_vs_mass.csv")
+df <- read.csv("./Data/wingspan_vs_mass.csv")
 #Inspect the first 5 lines of this data set using the head() function
 head(df,n = 5)
 
