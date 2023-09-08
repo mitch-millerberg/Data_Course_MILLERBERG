@@ -20,7 +20,7 @@
 
 # Vectors are 1-dimensional series of values in some order
 1:10 # ':' only works for integers
-letters # built-in pre-made vector of a - z
+letters # built-in pre-made vector of a - z # a char vector of 26 length
 
 
 
@@ -28,28 +28,36 @@ vector1 <- c(1,2,3,4,5,6,7,8,9,10)
 vector2 <- c(5,6,7,8,4,3,2,1,3,10)
 vector3 <- letters # letters and LETTERS are built-in vectors
 
-vector1 + 5
-vector2 / 2
+vector1[3] + 5
+
+vector2[2] / 2
+vector2[2] / 2
+
 vector1*vector2
 
 vector3 + 1 # can't add 1 to "a"
 
-
 # Logical expressions (pay attention to these...they are used ALL THE TIME)
-vector1 > 3
-vector1 >= 3
+vector1 > 3 # greater than
+vector1 >= 3 #greater than or equal to 
 vector1 < 5
 vector1 <= 5
 vector1 == 7
 letters == "a"
 letters != "c"
-letters %in% c("a","b","c","z")
+letters %in% c("a","b","c","z")  #found in %in% is letters vector in the list?
 vector1 %in% 1:6
 
+c("a","b","c","z") %in% letters
 
 # Data Frames ####
 # R has quite a few built-in data sets
 data("iris") # load it like this
+
+class(iris)
+class(vector1)
+class(vector3)
+
 
 # For built-in data, there's often a 'help file'
 ?iris
@@ -64,12 +72,24 @@ dat <- iris # can rename the object to be easier to type if you want
 
 # ways to get a peek at our data set
 names(dat)
-dim(dat)
-head(dat)
+dim(dat)+1
+dim(dat)[1]
+nrow(dat)
+?dim
+head(dat)[3]
 
 
 # You can access specific columns of a "data frame" by name using '$'
 dat$Species
+dat$Species[150]
+class(dat$Species)
+
+
+levels(dat$Species)
+
+factor(dat$Species,ordered = TRUE)
+
+class(dat$Species)
 dat$Sepal.Length
 
 # You can also use square brackets to get specific 1-D or 2-D subsets of a data frame (rows and/or columns)
@@ -87,7 +107,6 @@ letters[c(1,3,5,7)]
 plot(x=dat$Petal.Length, y=dat$Sepal.Length)
 plot(x=dat$Species, y=dat$Sepal.Length)
 
-
 # Object "Classes" ####
 
 #check the classes of these vectors
@@ -98,7 +117,7 @@ class(dat$Species)
 
 # Check all classes (for each column in dat)
 str(dat)
-
+summary(dat)
 # "Classes" of vectors can be changed if needed (you'll need to, for sure, at some point!)
 
 # Let's try
@@ -110,7 +129,7 @@ as.factor(nums) # show in console
 nums_factor <- as.factor(nums) #assign it to a new object as a factor
 class(nums_factor) # check it
 
-
+levels(nums_factor)
 # convert numeric to character
 as.character(vector1)
 as.character(vector1) + 5
@@ -118,12 +137,12 @@ as.character(vector1) + 5
 # convert character to numeric
 as.numeric(vector3)
 
-
-
-
+as.numeric(c("1",vector3))
 #check it out
 plot(nums) 
 plot(nums_factor)
+plot(as.factor(letters))
+
 # take note of how numeric vectors and factors behave differently in plot()
 
 
@@ -139,6 +158,10 @@ mean(vector1)
 range(vector1)
 summary(vector1)
 
+class(summary(vector1))
+table(nums)
+#table is handy 
+
 # cumulative functions
 cumsum(vector1)
 cumprod(vector1)
@@ -147,35 +170,43 @@ cummax(vector1)
 
 # even has built-in statistical distributions (we will see more of these later)
 dbinom(50,100,.5) # probability of getting exactly 50 heads out of 100 coin flips
-
+?dbinom
 
 
 
 # YOUR REMAINING HOMEWORK ASSIGNMENT (Fill in with code) ####
 
 # 1.  Get a subset of the "iris" data frame where it's just even-numbered rows
-
 seq(2,150,2) # here's the code to get a list of the even numbers between 2 and 150
 
+dat[seq(2,150,2),]
 
 
 # 2.  Create a new object called iris_chr which is a copy of iris, except where every column is a character class
 
-
+as.character(dat$Sepal.Length)
+class(iris)
+iris_chr <- as.character(dat$Sepal.Length,dat$Sepal.Width,dat$Petal.Length,dat$Petal,dat$Species)
+iris_chr
+class(iris_chr)
 
 # 3.  Create a new numeric vector object named "Sepal.Area" which is the product of Sepal.Length and Sepal.Width
 
-
+sepal.area <- iris[1]*iris[2]
 
 # 4.  Add Sepal.Area to the iris data frame as a new column
 
+iris["Sepal.Area"] <- sepal.area
 
 
 # 5.  Create a new dataframe that is a subset of iris using only rows where Sepal.Area is greater than 20 
       # (name it big_area_iris)
+big_area_iris
 
-
-
+area_iris <-  data.frame(Sepal.Area = iris$Sepal.Area)
+big_area_iris <- subset(area_iris, Sepal.Area > 20)
+  
+  
 # 6.  Upload the last numbered section of this R script (with all answers filled in and tasks completed) 
       # to canvas
       # I should be able to run your R script and get all the right objects generated
