@@ -46,7 +46,7 @@ bob == 7
 bob >= jane
 bob == jane
 jane == 10
-(jane == 10) + 1   #!???
+(jane == 10) + 1   #!??? true=1 false=0
 FALSE == 0
 TRUE == 1
 
@@ -73,11 +73,15 @@ is.vector(billy)
 
 # This works for STRINGS as well. Strings are made up of characters
 suzy = c("This","is","a","character","vector") # notice how each string is enclosed in quotes. That tells R it is a string
+is.vector(suzy)
+is.numeric(suzy)
 tommy <- c(3,4,5,6,7,TRUE,NA)
 
 # Think of these values (billy and suzy) like lists.  They have inherent order, so we can access any part of them:
 
 billy[1:3]
+billy[8:3]
+billy[3]
 billy[c(1,3)]
 suzy[c(4,5)]
 # The brackets [] allow you to pick one or more elements from an object.  Here, we asked for the first element
@@ -98,7 +102,7 @@ data <- cbind(observation,wingspan,mass)
 #data[row,column]
 data[1,3]
 data[,3] #just column 3
-data[1:10,3]
+data[1:5,3]
 data[5,] #just row 5
 
 data[,3]>.5
@@ -206,6 +210,7 @@ names(iris)
 # To just look at the data for the species, Iris virginica:
 
 iris[iris$Species == "virginica",]
+iris[iris$Sepal.Length == 4.3,]
 
 # There is a lot to unpack in that command...
 # First, the "$" immediately after the data frame object allows you to pick a column by name
