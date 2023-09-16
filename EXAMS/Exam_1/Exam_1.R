@@ -1,19 +1,22 @@
 #Exam_1
 #Mitchell Millerberg
+library(ggplot2)
+library(dplyr)
+library(scales)
 
 # YOUR TASKS:
-library(ggplot2)
 # **I.**
 # **Read the cleaned_covid_data.csv file into an R data frame. (20 pts)**
 
 # Define the file path
 
-file_path <- "EXAMS/Exam_1/cleaned_covid_data.csv"
+file_path <- "./EXAMS/Exam_1/cleaned_covid_data.csv"
 
 # Read the CSV file into a data frame
 clean_covid_data <- read.csv(file_path)
 clean_covid_data
-# Now, the 'covid_data' variable contains the data from the CSV file
+# The 'clean_covid_data' variable contains the data from the CSV file
+
 # read the column headers
 head(clean_covid_data)
 # **II.**
@@ -51,20 +54,27 @@ ggplot(data = A_states, aes(x = Last_Update, y = Deaths, color = Province_State)
   facet_wrap(~Province_State, scales = "free_y", nrow = 2) +  # Separate facets for each state
   labs(title = "Deaths Over Time for States Starting with 'A'",
        x = "Last_Update",
-       y = "Deaths")+
+       y = "Deaths")
  
 
-
 # **IV.** (Back to the full dataset)
-# **Find the "peak" of Case_Fatality_Ratio for each state and save this as a new data frame object called state_max_fatality_rate. (20 pts)**
-  
+# **Find the "peak" of Case_Fatality_Ratio for each state and save this as a new data frame 
+# object called state_max_fatality_rate. (20 pts)**
 # I'm looking for a new data frame with 2 columns:
-
 #+ "Province_State"
 #+ "Maximum_Fatality_Ratio"
 #+ Arrange the new data frame in descending order by Maximum_Fatality_Ratio
- 
 #This might take a few steps. Be careful about how you deal with missing values!
+
+
+# Group the data by Province_State and summarize to find the maximum Case_Fatality_Ratio
+state_max_fatality_rate <- clean_covid_data %>%
+  group_by(Province_State) %>%
+  summarize(Maximum_Fatality_Ratio = max(Case_Fatality_Ratio, na.rm = TRUE)) %>%
+  arrange(desc(Maximum_Fatality_Ratio))
+
+# Print the resulting data frame
+state_max_fatality_rate
 
 
 # **V.**
@@ -78,7 +88,29 @@ ggplot(data = A_states, aes(x = Last_Update, y = Deaths, color = Province_State)
  
 # Even with this partial data set (not current), you should be able to see that (within these dates), different states had very different fatality ratios.
 
+# The bar plot
+ggplot(state_max_fatality_rate, aes(x = reorder(Province_State, -Maximum_Fatality_Ratio), y = Maximum_Fatality_Ratio)) +
+  geom_bar(stat = "identity", fill = "darkred") +
+  labs(x = "Province_State", y = "Maximum_Fatality_Ratio") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  ggtitle("Maximum Fatality Ratio by Province State")
+
+
 # **VI.** (BONUS 10 pts)
 # **Using the FULL data set, plot cumulative deaths for the entire US over time**
-
 #+ You'll need to read ahead a bit and use the dplyr package functions group_by() and summarize() to accomplish this.
+# Group and summarize the data to calculate cumulative deaths
+cumulative_data <- clean_covid_data %>%
+  group_by(Last_Update) %>%
+  summarize(Cumulative_Deaths = sum(Deaths))
+
+# Create a cumulative sum of deaths
+cumulative_data <- cumulative_data %>%
+  mutate(Cumulative_Deaths = cumsum(Cumulative_Deaths))
+
+# Create the cumulative deaths plot
+ggplot(cumulative_data, aes(x = Last_Update, y = Cumulative_Deaths,)) +
+  geom_point( color = "blue") +
+  
+  labs(x = "Date", y = "Cumulative Deaths") +
+  ggtitle("Cumulative Deaths for the Entire US Over Time")
