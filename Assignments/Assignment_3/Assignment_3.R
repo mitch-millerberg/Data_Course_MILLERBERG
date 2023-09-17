@@ -184,17 +184,17 @@ dat[seq(2,150,2),]
 
 
 # 2.  Create a new object called iris_chr which is a copy of iris, except where every column is a character class
+# Get a subset of "iris" with even-numbered rows
+even_rows <- iris[seq(2, nrow(iris), by = 2),]
 
-as.character(dat$Sepal.Length)
-class(iris)
-iris_chr <- as.character(dat$Sepal.Length,dat$Sepal.Width,dat$Petal.Length,dat$Petal,dat$Species)
-iris_chr
-class(iris_chr) #sanity check
+# Create a copy of "iris" with all columns converted to character class
+iris_chr <- as.data.frame(lapply(iris, as.character), stringsAsFactors = FALSE)
+
 
 # 3.  Create a new numeric vector object named "Sepal.Area" which is the product of Sepal.Length and Sepal.Width
+# Create the Sepal.Area vector by multiplying Sepal.Length and Sepal.Width
 
-sepal.area <- iris[1]*iris[2]
-head(dat) #sanity check
+sepal.area <- iris$Sepal.Length*iris$Sepal.Width
 
 # 4.  Add Sepal.Area to the iris data frame as a new column
 
@@ -204,10 +204,12 @@ head(iris) #sanity check
 # 5.  Create a new dataframe that is a subset of iris using only rows where Sepal.Area is greater than 20 
       # (name it big_area_iris)
 
-area_iris <-  data.frame(Sepal.Area = iris$Sepal.Area)
-big_area_iris <- subset(area_iris, Sepal.Area > 20)
-head(big_area_iris) #sanity check
-  
+# Create the big_area_iris dataframe
+big_area_iris <- iris[iris$Sepal.Area > 20, ]
+
+# print the rows of big_area_iris
+print(big_area_iris)
+
   
 # 6.  Upload the last numbered section of this R script (with all answers filled in and tasks completed) 
       # to canvas
