@@ -1,0 +1,9 @@
+The plan involves leveraging public Cottonwood Canyon traffic data sourced from the Utah Department of Transportation (UDOT), a state government agency in Utah, United States. This data will serve as the foundation for optimized UTA bus schedules for the winter  ski season. My primary objective is to identify peak traffic periods when the highest number of vehicles navigate the canyon.The estimate the volume of travelers during these peak hours. Maybe even add some weather data if I'm feeling up to it. 🙂
+
+By implementing this strategy, I hope to reduce the risk of ski resort parking lots filling to capacity, which would help to ease congestion problems in the Cottonwood Canyons. This project would help to consult UTA to improve the ski bus schedule.
+A promising data source for this initiative could be the Performance Measurement System (PeMS), an Internet-based tool designed for real-time monitoring of urban freeway conditions. PeMS offers the capability to generate congestion monitoring reports by utilizing data automatically collected from statewide sensors, including those within the Cottonwood Canyons.
+
+I will  tap into UTA's bus schedule and mapping resources. By analyzing existing schedules and harnessing GPS data from buses, we can approximate the timing and locations of buses as they navigate the canyon. This valuable information will help us estimate the travel duration for buses both ascending and descending the canyon route.
+
+I have created an account with PeMS and obtained an example data set of flow rates up Big Cottonwood Canyon (BCC) between From 01/01/2023 To 03/31/2023. 
+PeMS has a minimum time range of 2 days  and a max Range of 1 year. 
