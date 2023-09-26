@@ -102,7 +102,7 @@ ggplot(state_max_fatality_rate, aes(x = reorder(Province_State, -Maximum_Fatalit
 # Group and summarize the data to calculate cumulative deaths
 cumulative_data <- clean_covid_data %>%
   group_by(Last_Update) %>%
-  summarize(Cumulative_Deaths = sum(Deaths))
+  summarize(Cumulative_Deaths = sum(Deaths, na.rm = TRUE))
 
 # Create a cumulative sum of deaths
 cumulative_data <- cumulative_data %>%
