@@ -22,11 +22,13 @@ library(gifski)
 
 # Load the data and create the Location column
 data <- read.csv("../../Data/BioLog_Plate_Data.csv")
+
 #names(data)
 
-#i want create a new column based on the information that is in column 1
-# look at column 1 and if the value is "Clear_Creek",or "Waste_Water" then create a value "Water", everything else "Soil"
-#I want to use pivotlonger to combine named "Hr_24", "Hr_48" and "Hr_144"
+#Clean the data by making a new column based on the information that is in column 1
+# look at column 1 and if the value is "Clear_Creek",or "Waste_Water" then create a 
+#value "Water", everything else "Soil"
+
 data <- data %>%
   mutate(Type = ifelse(Sample.ID %in% c("Clear_Creek", "Waste_Water"), "Water", "Soil"))
 
@@ -36,9 +38,10 @@ data_long <- data %>%
     names_to = "Time",
     values_to = "Absorbance"
   )
-# want to plot the data using ggplot. Use line ggplot that is facet wrapped on substrate and time. also filter  the
-# Dilution == 0.1)
-data_time <- data_long  %>%  mutate(Time =  as.numeric(str_remove_all(Time, "\\D+"))) 
+
+# Plot the data using ggplot. Use geom smooth to plot a line  that is facet wrapped on substrate and time.
+#also filter  the Dilution == 0.1)
+data_time <- data_long  %>%  mutate(Time =  as.numeric(str_remove_all(Time, "\\D+"))) #make the values numeric 
 
 data_time %>% 
  filter(Dilution == 0.1) %>% ggplot( aes(x = Time, y = Absorbance, color = Type)) +
@@ -54,12 +57,12 @@ geom_smooth(se = 0) +
 
 
 
-# Create the ggplot and animate it but only for the substrate “Itaconic Acid” 
-#also facet_wrap it by Hr_24
+# Create a ggplot  that is animated. The plot should only be for the substrate “Itaconic Acid” 
+#also facet_wrap it by Dilution
 
 plot <- data_time %>% 
 filter(Substrate == "Itaconic Acid") %>% 
-group_by(Sample.ID,Time,Dilution,Type) %>% summarise(mean_Absorbance=mean(Absorbance)) %>% 
+group_by(Sample.ID,Time,Dilution,Type) %>% summarise(mean_Absorbance=mean(Absorbance)) %>%  #goup by and summarise the data 
 
 ggplot(aes(x = Time, y = mean_Absorbance, color = Sample.ID)) +
   geom_line() +
@@ -67,7 +70,7 @@ ggplot(aes(x = Time, y = mean_Absorbance, color = Sample.ID)) +
   facet_wrap(~ Dilution) +
 transition_reveal(Time) 
 
-animate(plot,nframes = 25, renderer = gifski_renderer("mean_absorbance_itaconic_animation.gif"))
+animate(plot,nframes = 25, renderer = gifski_renderer("mean_absorbance_itaconic_animation.gif")) # make the data animated and save it. 
 
 
    
