@@ -23,6 +23,7 @@ library(gifski)
 # Load the data and create the Location column
 data <- read.csv("../../Data/BioLog_Plate_Data.csv")
 
+# data2 <- read.csv("BioLog_Plate_Data.csv")
 #names(data)
 
 #Clean the data by making a new column based on the information that is in column 1
