@@ -38,8 +38,8 @@ data <- read.csv("../../Data/Utah_Religions_by_County.csv") %>%
 clean_names()
 names(data)
 
-#more cleaning
-data_long <- data %>%
+#more cleaning, I want the type of religion to be a feature that is filterable 
+data_gather <- data %>%
   gather(key = "Religion", value = "Proportion", -county, -pop_2010, -religious, -non_religious)
 
 #“Does population of a county correlate with the proportion of any specific religious group
@@ -93,11 +93,11 @@ ggplot(subset2, aes(x = religious_proportion, y = non_religious_proportion)) +
 #I Was trying to plot the religions on a GEO map. I ran out of 
 # time for this more complex of a task
 
-# Here are some plots using the Long data set.
-names(data_long)
+# Here are some plots using the gather data set.
+names(data_gather)
 
 # plot based on population and county
-ggplot(data_long, aes(x = county, y = pop_2010)) +
+ggplot(data_gather, aes(x = county, y = pop_2010)) +
   geom_point() +
   labs(title = "Population and County",
        x = "County",
@@ -106,7 +106,7 @@ ggplot(data_long, aes(x = county, y = pop_2010)) +
  # facet_wrap(~ Religion, scales = "free") +
   
 # plot based on Non Religious Percentage and county
-ggplot(data_long, aes(x = county, y = non_religious)) +
+ggplot(data_gather, aes(x = county, y = non_religious)) +
   geom_point() +
   labs(title = "Non Religious Percentage and County",
        x = "County",
@@ -115,7 +115,7 @@ ggplot(data_long, aes(x = county, y = non_religious)) +
 #facet_wrap(~ Religion, scales = "free") +
 
 #violin plot
-ggplot(data_long, aes(x = Religion, y = Proportion)) +
+ggplot(data_gather, aes(x = Religion, y = Proportion)) +
   geom_violin(fill = "blue") +
   labs(x = "Religion", y = "Proportion") +
   ggtitle("Proportions of Religious Groups in Utah Counties") +
@@ -123,7 +123,7 @@ ggplot(data_long, aes(x = Religion, y = Proportion)) +
 
 
 # plot based on Religious Percentage and county
-ggplot(data_long, aes(x = county, y = religious)) +
+ggplot(data_gather, aes(x = county, y = religious)) +
   geom_point() +
   labs(title = "Religious Percentage and County",
        x = "County",
@@ -131,14 +131,14 @@ ggplot(data_long, aes(x = county, y = religious)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
 # A bar plot by proportion and county 
-ggplot(data_long, aes(x = county, y = Proportion, fill = Religion)) +
+ggplot(data_gather, aes(x = county, y = Proportion, fill = Religion)) +
   geom_bar(stat = "identity") +
   labs(x = "County", y = "Proportion") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   ggtitle("Proportion of Religious Groups in Utah Counties")
 
 # A boxplot
-ggplot(data_long, aes(x = Religion, y = Proportion, fill = Religion)) +
+ggplot(data_gather, aes(x = Religion, y = Proportion, fill = Religion)) +
   geom_boxplot() +
   labs(x = "Religion", y = "Proportion") +
   ggtitle("Proportion of Religious Groups in Utah Counties (Boxplot)")+
