@@ -189,9 +189,11 @@ new_data_ecuador <- data.frame(year = 2020, Continent = "Americas")
 predicted_U5MR_ecuador <- predict(mod3, new_data_ecuador)
 
 # The prediction
+difference <- abs(predicted_U5MR_ecuador - 13)
 cat("Predicted U5MR for Ecuador in 2020:", predicted_U5MR_ecuador, "\n")
-# How far off was your model prediction???
 cat("Difference from Real Value:", difference, "\n")
+
+# How far off was your model prediction???
 #-10.58018  was NOT close to 12.5 DEATHS PER 1,000 LIVE BIRTHS, the difference from real value is 27.21058
 
 # A "better" linear regression model
@@ -203,8 +205,10 @@ AIC(mod3,better_model)
 BIC(mod3,better_model) 
 
 # Predict U5MR for Ecuador in 2020 using the new model
-predicted_U5MR_ecuador_new <- predict(better_model, newdata = new_data_ecuador)
+predicted_U5MR_ecuador_better <- predict(better_model, newdata = new_data_ecuador)
 
 # Print the new prediction and the difference
-cat("Predicted U5MR for Ecuador in 2020 (New Model):", predicted_U5MR_ecuador_new, "\n")
-cat("Difference from Real Value:", difference, "\n")
+difference_better <- abs(predicted_U5MR_ecuador_better - 13)
+cat("Predicted U5MR for Ecuador in 2020 (Better Model):", predicted_U5MR_ecuador_better, "\n")
+cat("Difference from Real Value:", difference_better, "\n")
+
