@@ -1,0 +1,66 @@
+---
+title: "Assignment_9"
+author: "mitchell"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r, echo=FALSE, include=FALSE}
+
+library(tidyverse)
+library(tidyr)
+library(readxl)
+library(janitor)
+library(lubridate)
+library(gganimate)
+library(transformr)
+library(ggplot2)
+library(stringr)
+library(gganimate)
+library(gifski)
+library(skimr)
+```
+```{r start, echo=FALSE}
+GradData <- read.csv("../../Data/GradSchool_Admissions.csv")
+
+```
+
+## R Markdown_GradSchool_Admissions
+The following data analysis examines the acceptance rates of graduate school applicants. This analysis will help students visualize and predict which rank of school they are likely to be accepted to based on their GRE scores and GPA. I have used R markdown to present my data analysis in an HTML format.
+ 
+
+```{r GradSchool_data, echo=FALSE}
+
+skim(GradData)
+# summary(GradData)
+```
+The source data has 4 variables and 400 observations. The four variables include Admitance,gre,gpa,rank.
+
+## Including Plots
+```{r pressure, echo=FALSE}
+heatmap <- ggplot(GradData, aes(x = gre, y = gpa, fill = admit)) +
+  geom_tile() +
+  scale_fill_gradient(low = "red", high = "green") +
+  labs(title = "Heatmap of GRE vs. GPA by Acceptance",
+       x = "GRE Score",
+       y = "GPA",
+       fill = "Acceptance") +
+  theme_minimal()
+
+# Print the heatmap
+print(heatmap)
+
+```
+
+
+
+### Conclusion:
+The data analysis shows that there is a strong correlation between GRE scores and GPA, and acceptance rates to graduate schools. Students with higher GRE scores and GPAs are more likely to be accepted to higher-ranked schools
+v n
+In conclusion, the following exploratory plots and the logistic regression model show that GRE scores and GPA appear to be positively associated with admission.
+
+A higher rank (lower number) of the undergraduate institution indicates a higher probability of admission.
+
+The logistic regression model provides insights into the significance of these variables and how they collectively affect the likelihood of admission.
+
+
