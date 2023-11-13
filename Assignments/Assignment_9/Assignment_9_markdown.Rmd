@@ -36,7 +36,7 @@ skim(GradData)
 ```
 The source data has 4 variables and 400 observations. The four variables include Admitance,gre,gpa,rank.
 
-## Including Plots
+## The story told in Plots
 ```{r pressure, echo=FALSE}
 heatmap <- ggplot(GradData, aes(x = gre, y = gpa, fill = admit)) +
   geom_tile() +
@@ -52,6 +52,128 @@ print(heatmap)
 
 ```
 
+## Bar chart for "admitance" which is a binary outcome
+```{r binary outcome predictiors, echo=FALSE}
+barplot(table(GradData$admit), col = c("red", "green"),
+        xlab = "Admissions Status", names.arg = c("Not Admitted", "Admitted"))
+
+```
+
+## Histograms for GRE Scores and GPA, which are numerical predictors
+```{r numerical predictors, echo=FALSE}
+
+hist(GradData$gre, col = "lightpink", xlab = "GRE Score", main = "Histogram of GRE Scores")
+hist(GradData$gpa, col = "purple", xlab = "GPA", main = "Histogram of GPAs")
+
+
+```
+
+## Box plot to visualize the relationship between GRE scores and admission
+```{r boxplot, echo=FALSE}
+# Box plot to visualize the relationship between GRE scores and admission
+plot1 <- ggplot(GradData, aes(x = admit, y = gre, fill = factor(admit))) +
+  geom_boxplot() +
+  labs(title = "GRE Scores vs. Admission",
+       x = "Admission Status",
+       y = "GRE Score") +
+  scale_fill_manual(values = c("red", "green")) +
+  theme(legend.key.size = unit(1.5, "cm"))
+
+print(plot1)
+  
+
+# Box plot to visualize the relationship between GPA scores and admission
+plot2 <- boxplot(GradData$gpa ~ GradData$admit, col = c("red", "green"),
+        names = c("Not Admitted", "Admitted"),
+        main = "GPA Scores vs. Admission",
+        ylab = "GPA Score",
+        xlab = "Admission Status")
+
+```
+  
+## Scatter Plot by School Rank  
+A scatter plot of GRE scores versus GPAs was created for all rankings.
+ 
+```{r scatter_plot_ALL, echo=FALSE}
+
+scatter_plot <- ggplot(GradData, aes(x = gre, y = gpa, color = factor(rank))) +
+  geom_point() +
+  labs(title = "Scatter Plot of GRE vs. GPA by Rank",
+       x = "GRE Score",
+       y = "GPA",
+       color = "Rank") +
+  scale_color_manual(values = c("black", "black", "black", "black")) +
+  theme_minimal()
+print(scatter_plot)
+```
+
+Rank 3 was chosen for further investigation of the likelihood of a linear relationship between GPA and GRE score using a linear regression model.
+
+```{r scatter_plot_rank3, echo=FALSE}
+# rank_filter
+selected_rank <- 3
+
+# Scatter plot filtered by rank
+scatter_plot <- ggplot(GradData, aes(x = gre, y = gpa, color = factor(rank))) +
+  geom_point(data = subset(GradData, rank == selected_rank)) +  # Filter the data
+  labs(title = paste("Scatter Plot of GRE vs. GPA for Rank", selected_rank),
+       x = "GRE Score",
+       y = "GPA",
+       color = "Rank") +
+  scale_color_manual(values = c("green")) +
+  theme_minimal()
+
+# Print the scatter plot
+print(scatter_plot)
+```
+
+## MODEL 
+The value of the actual data observed for school ranked # 3 can be compared to the model of the scatter plot by plotting the point (3, value of the actual data observed for school ranked # 3) on the scatter plot.
+
+```{r, mitch, echo=FALSE, warning=FALSE}
+scatter_plot_with_model <- scatter_plot +
+  geom_smooth(method = "glm", formula = y ~ x, data = GradData,
+              method.args = list(family = binomial), color = "limegreen", linetype = "dashed")
+
+scatter_plot_with_model
+
+
+```
+
+
+The model shows the predictors of graduate school admission 
+
+
+GRE vs. Admit
+
+```{r gre/admit , echo=FALSE}
+
+plot(GradData$gre, GradData$admit, main = "GRE vs. Admission Status",
+     xlab = "GRE Score", ylab = "Admission Status")
+
+```
+
+
+
+GPA vs. Admit
+
+```{r, GPA vs. Admit, echo=FALSE}
+
+plot(GradData$gpa, GradData$admit, main = "GPA vs. Admission Status",
+     xlab = "GPA", ylab = "Admission Status")
+```
+```
+
+```{r model, echo=FALSE}
+model1 <- glm(admit ~ gpa, data = GradData, family = binomial)
+model2 <- lm(gre ~ gpa, data = GradData)
+
+```
+
+```{r summary, echo=TRUE}
+summary(model1)
+summary(model2)
+```
 
 
 ### Conclusion:

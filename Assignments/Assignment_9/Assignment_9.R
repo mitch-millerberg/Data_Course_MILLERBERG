@@ -21,6 +21,8 @@ library(gganimate)
 library(gifski)
 library(skimr)
 library(GGally)
+library(jtools)
+install.packages("jtools")
 
 # Load the data 
 GradData <- read.csv("../../Data/GradSchool_Admissions.csv")
@@ -28,13 +30,26 @@ names(GradData)
 skim(GradData)
 summary(GradData)
 
+# Create a heatmap
+heatmap <- ggplot(GradData, aes(x = gre, y = gpa, fill = admit)) +
+  geom_tile() +
+  scale_fill_gradient(low = "red", high = "green") +
+  labs(title = "Heatmap of GRE vs. GPA by Acceptance",
+       x = "GRE Score",
+       y = "GPA",
+       fill = "Acceptance") +
+  theme_minimal()
+
+# Print the heatmap
+print(heatmap)
+
 #plot histograms for the numerical predictors
-hist(GradData$gre,col = "blue", xlab = "GRE Score")
-hist(GradData$gpa,col = "green", xlab = "GPA")
+hist(GradData$gre, col = "blue", xlab = "GRE Score", main = "Histogram of GRE Scores")
+hist(GradData$gpa, col = "green", xlab = "GPA", main = "Histogram of GPAs")
 
 #plot Bar chart for "admitance which is a binary outcome
-barplot(table(GradData$admit), col = "red",xlab = "Admissions Status",
-        names.arg = c("Not Admitted", "Admitted"))
+barplot(table(GradData$admit), col = c("red", "green"),
+        xlab = "Admissions Status", names.arg = c("Not Admitted", "Admitted"))
 
 #plot scatterplot matrix to see potential realationshps between variables 
 plot(GradData[,-1],pch= 20, col = GradData$admit)
@@ -49,18 +64,22 @@ plot1 <- ggplot(GradData, aes(x = admit, y = gre, fill = factor(admit))) +
   labs(title = "GRE Scores vs. Admission",
        x = "Admission Status",
        y = "GRE Score") +
-  scale_fill_manual(values = c("blue", "lightgreen")) +
+  scale_fill_manual(values = c("red", "green")) +
   theme(legend.key.size = unit(1.5, "cm"))
 
 print(plot1)
   
 
 # Box plot to visualize the relationship between GPA scores and admission
-boxplot(GradData$gpa ~ GradData$admit, col = c("lightblue", "lightgreen"),
+plot2 <- boxplot(GradData$gpa ~ GradData$admit, col = c("red", "green"),
         names = c("Not Admitted", "Admitted"),
         main = "GPA Scores vs. Admission",
         ylab = "GPA Score",
         xlab = "Admission Status")
+
+# combine plot 1 and 2
+# # Arrange the two plots side by side
+# grid.arrange(plot1, plot2, ncol = 2)
 
 #scatter plot all rankings
 scatter_plot <- ggplot(GradData, aes(x = gre, y = gpa, color = factor(rank))) +
@@ -69,7 +88,7 @@ scatter_plot <- ggplot(GradData, aes(x = gre, y = gpa, color = factor(rank))) +
        x = "GRE Score",
        y = "GPA",
        color = "Rank") +
-  scale_color_manual(values = c("red", "blue", "green", "purple")) +
+  scale_color_manual(values = c("black", "black", "black", "black")) +
   theme_minimal()
 print(scatter_plot)
 
@@ -84,7 +103,7 @@ scatter_plot <- ggplot(GradData, aes(x = gre, y = gpa, color = factor(rank))) +
        x = "GRE Score",
        y = "GPA",
        color = "Rank") +
-  scale_color_manual(values = c("purple")) +
+  scale_color_manual(values = c("green")) +
   theme_minimal()
 
 # Print the scatter plot
@@ -95,22 +114,11 @@ model <- glm(admit ~ gre + gpa + rank, data = GradData, family = binomial)
 
 # Add the model's predicted probabilities to the scatter plot
 scatter_plot_with_model <- scatter_plot +
-  geom_smooth(method = "glm", formula = y ~ x, data = GradData, method.args = list(family = binomial), color = "black", linetype = "dashed")
+  geom_smooth(method = "glm", formula = y ~ x, data = GradData,
+              method.args = list(family = binomial), color = "limegreen", linetype = "dashed")
 
 scatter_plot_with_model
 
-# Create a heatmap
-heatmap <- ggplot(GradData, aes(x = gre, y = gpa, fill = admit)) +
-  geom_tile() +
-  scale_fill_gradient(low = "red", high = "green") +
-  labs(title = "Heatmap of GRE vs. GPA by Acceptance",
-       x = "GRE Score",
-       y = "GPA",
-       fill = "Acceptance") +
-  theme_minimal()
-
-# Print the heatmap
-print(heatmap)
 
 # Explore and model the predictors of graduate school admission
 # Scatter plot of GRE vs. Admit
@@ -127,7 +135,7 @@ model <- glm(admit ~ gre + gpa + rank, data = GradData, family = binomial)
 
 model1 <- glm(admit ~ gpa, data = GradData, family = binomial)
 model2 <- lm(gre ~ gpa, data = GradData)
-
+print(model)
 summary(model1)
 summary(model2)
 
