@@ -7,24 +7,122 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(skimr)
+library(janitor)
+library(tidyr)
+library(broom)
+library(tidyverse)
+library(readxl)
+library(lubridate)
+library(gganimate)
+library(transformr)
+library(stringr)
+library(gganimate)
+library(gifski)
+library(dplyr)
+library(sf)
+library(gplots)
+library(scales)
+library(easystats)
+library(ggplot2)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+# Load FacultySalaries_1995.csv
+#data1 <- read_csv("./FacultySalaries_1995.csv")
+# clean FacultySalaries_1995.csv
+# used pivot_longer to combine salary, compensation and number columns
+# then changed names in Rank variable
+```{r}
+file_path <- "FacultySalaries_1995.csv"
+data1 <- read.csv(file_path)
+data1 <- data1 %>% 
+  pivot_longer(cols = c("AvgFullProfSalary", "AvgAssocProfSalary", "AvgAssistProfSalary"),
+               names_to = "Rank",
+               values_to = "Salary") %>% 
+  pivot_longer(cols = c("AvgFullProfComp", "AvgAssocProfComp", "AvgAssistProfComp"),
+               names_to = "Rank_Comp",
+               values_to = "Compensation") %>% 
+  pivot_longer(cols = c("NumFullProfs", "NumAssocProfs", "NumAssistProfs", "NumInstructors"),
+               names_to = "Rank_Num",
+               values_to = "Staff_Number") %>% 
+  mutate(Rank = case_when(Rank == "AvgFullProfSalary" ~ "Full",
+                          Rank == "AvgAssocProfSalary" ~ "Assoc",
+                          Rank == "AvgAssistProfSalary" ~ "Assist"))
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+# removed VIIB schools
+# re-created fig1.png
+# exported as millerberg_Fig_1.jpg
+```{r pt.2}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+data1 <- data1[!(data1$Tier=="VIIB"), ]
+data1 %>% 
+  ggplot(aes(x=Rank,y=Salary)) +
+  geom_boxplot(aes(fill=Rank)) +
+  facet_wrap(~Tier) +
+  theme_minimal() +
+  theme(legend.key.size = unit(1, "cm"),
+        legend.title = element_text(size = 19, color = "black"),
+        legend.text = element_text(size = 13, color = "black"),
+        axis.text.x = element_text(angle = 65, size = 13, color = "black"),
+        axis.text.y = element_text(size = 13, color = "black"),
+        axis.title.x = element_text(size = 19, color = "black"),
+        axis.title.y = element_text(size = 19, color = "black"),
+        strip.text.x = element_text(size = 13, color = "black"))
+ggsave("./millerberg_Fig_1.jpg")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## 
+
+```{r pt.3, echo=FALSE}
+# 2. Build an ANOVA model and display the summary output in your report.
+# create a model showing how Rank,state, and tier impact the salary.
+model1 <- glm(data = data1, 
+            formula = Salary ~ Rank + State + Tier )
+summary(model1)
+
+# ANOVA of the formula
+anova(model1)
+summary(model1)
+
+# export ANOVA table as Salary_ANOVA_Summary.txt
+sink("./Salary_ANOVA_Summary.txt") #divert the output to a file instead of the console. 
+anova(model1)
+sink(NULL) #This line of code stops redirecting the output to the file.
+
+```
+
+```{r pt.4, echo=FALSE}
+# 3. clean and tidy the next data set “Juniper_Oils.csv” data.
+# Load and tidy Juniper_Oils.csv
+data2 <- read_csv("./Juniper_Oils.csv")
+
+# combined chemicals into concentration and ID
+data2 <- data2 %>% 
+  pivot_longer(cols = c("alpha-pinene","para-cymene","alpha-terpineol","cedr-9-ene",
+                        "alpha-cedrene","beta-cedrene","cis-thujopsene","alpha-himachalene",
+                        "beta-chamigrene","cuparene","compound 1","alpha-chamigrene",
+                        "widdrol","cedrol","beta-acorenol","alpha-acorenol","gamma-eudesmol",
+                        "beta-eudesmol","alpha-eudesmol","cedr-8-en-13-ol","cedr-8-en-15-ol",
+                        "compound 2","thujopsenal"),
+               names_to = "ChemicalID",
+               values_to = "Concentration")
+
+
+# 4. Make another graph:
+data2 %>% 
+  ggplot(aes(x=YearsSinceBurn, y=Concentration)) +
+  facet_wrap(~ChemicalID, scales = "free_y") +
+  geom_smooth(method = loess) +
+  theme_minimal() +
+  labs(x = "Years Since Burn",
+       title = "Concentration by Chemical") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+# export to millerberg_Fig_2.jpg
+ggsave("./millerberg_Fig_2.jpg")
+
+```
+

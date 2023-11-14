@@ -48,9 +48,11 @@ library(scales)
 #   
 #   Create any model of your choosing that improves upon this “Ecuadorian measure of model correctness.” By transforming the data, I was able to find a model that predicted Ecuador would have a U5MR of 16.61…not too far off from reality
 
-# file_path <- "./unicef-u5mr.csv"
+# wrong # file_path <- "./unicef-u5mr.csv"
+file_path <- "unicef-u5mr.csv"
 
 file_path <- "././unicef-u5mr.csv"
+file_path <- "./EXAMS/Exam_2/unicef-u5mr.csv"
 # Read the CSV file into a data frame
 data <- read.csv(file_path)
 summary(data)
