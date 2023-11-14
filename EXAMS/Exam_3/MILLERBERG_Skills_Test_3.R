@@ -35,7 +35,7 @@ library(ggplot2)
 # Load FacultySalaries_1995.csv
 #data1 <- read_csv("./FacultySalaries_1995.csv")
 
-file_path <- "././FacultySalaries_1995.csv"
+file_path <- "FacultySalaries_1995.csv"
 
 data1 <- read.csv(file_path)
 # clean FacultySalaries_1995.csv
