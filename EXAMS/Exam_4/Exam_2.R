@@ -29,8 +29,7 @@ library(scales)
 # 
 # - Another line plot (not smooth trendline)
 # - Colored by continent
-# 6. Save that plot as LASTNAME_Plot_2.png (5 pts) 
-# 7. Create three models of U5MR (20 pts)
+# 6. Save that plot as LASTNAME_Plot_2.png (5 pts) 7. Create three models of U5MR (20 pts)
 # 
 # - mod1 should account for only Year
 # - mod2 should account for Year and Continent
@@ -49,7 +48,8 @@ library(scales)
 #   
 #   Create any model of your choosing that improves upon this “Ecuadorian measure of model correctness.” By transforming the data, I was able to find a model that predicted Ecuador would have a U5MR of 16.61…not too far off from reality
 
-file_path <- "./unicef-u5mr.csv"
+
+file_path <- "unicef-u5mr.csv"
 
 # wrong # file_path <- "./unicef-u5mr.csv"
 # file_path <- "././unicef-u5mr.csv"
