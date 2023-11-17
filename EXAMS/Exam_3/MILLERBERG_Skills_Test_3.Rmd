@@ -35,7 +35,7 @@ The first task involves loading and cleaning the "FacultySalaries_1995.csv" data
 
 # Reading Data:
 
-The code creates a file path and reads in a CSV file named "FacultySalaries_1995.csv" into a data frame named data1.The read.csv function is used to read the CSV file.
+The code creates a file path and reads in a CSV file named "FacultySalaries_1995.csv" into a data frame named data1. The read.csv function is used to read the CSV file.
 ```{r}
 
 file_path <- "FacultySalaries_1995.csv"
@@ -71,7 +71,7 @@ data1 <- data1 %>%
 
 # Filtering Data:
 
-It removes rows where the "Tier" variable is equal to "VIIB".
+Removes rows where the "Tier" variable is equal to "VIIB".
 
 ```{r}
 
@@ -115,13 +115,14 @@ In the second task, an analysis of variance (ANOVA) model is constructed to exam
 
 # Building and Analyzing ANOVA Model:
 
-This line creates a generalized linear model (GLM) where Salary is modeled as a function  of Rank, State, and Tier in the dataset data1. The summary function of the fitted GLM model, shows coefficients, standard errors, t-values, and p-values.
+This code creates a generalized linear model (GLM) where Salary is modeled as a function  of Rank, State, and Tier in the dataset data1. The summary function of the fitted GLM model, shows coefficients, standard errors, t-values, and p-values.
 
 ```{r}
 model1 <- glm(data = data1, 
             formula = Salary ~ Rank + State + Tier )
 summary(model1)
 ```
+
 # Exporting ANOVA Summary:
 
 The sink function diverts the output to a file ("Salary_ANOVA_Summary.txt") instead of the console, providing a written summary of the ANOVA results.
@@ -140,7 +141,7 @@ sink(NULL)
 
 # Task 3: "Juniper_Oils.csv"
 
-Moving to the "Juniper_Oils.csv" dataset, the third task involves loading and tidying the data. This dataset contains measurements of chemical concentrations in the essential oil of cedar trees over various years since a burn event. The provided list of chemical compounds guides the tidying process.
+Moving to the "Juniper_Oils.csv" dataset, the third task involves loading and tidying the data. This dataset contains measurements of chemical concentrations in the essential oil of cedar trees over various years since a burn event.
 
 # Cleaning and Tidying Another Dataset:
 Loading and Tidying Data:
@@ -196,6 +197,7 @@ The final task entails applying a generalized linear model (GLM) to identify che
 # Generalized Linear Model (GLM):
 This R code performs statistical analysis using a generalized linear model (GLM) to identify chemicals whose concentrations are significantly affected by "Years Since Burn." It then produces a tidy data frame containing information about statistically significant effects. glm is used to create a generalized linear model.
 The formula Concentration ~ ChemicalID * YearsSinceBurn specifies that the concentration is modeled as a function of both the chemical ID and the interaction between chemical ID and years since burn. Summary extracts various pieces of information from the GLM, including coefficient estimates, standard errors, statistics, and p-values.
+
 ```{r}
 model2 <- glm(data = data2, formula = Concentration ~ ChemicalID * YearsSinceBurn)
 
@@ -205,6 +207,7 @@ model2_sum <- summary(model2)
 
 # Tidy Data Frame:
 Tidy function from the broom package is used to tidy up the model results. It extracts and organizes information about the model parameters.
+
 ```{r}
 tidy <- tidy(model2)
 
